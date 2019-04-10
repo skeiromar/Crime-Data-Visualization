@@ -1,8 +1,8 @@
 
 
 
-function message() {
-    console.log("how are you?");
+function message(w) {
+    console.log(w);
 }
 
 
