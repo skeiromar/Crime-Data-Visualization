@@ -7,21 +7,17 @@
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="../styles/main.css">
     <script type="text/javascript" src="../bundle.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYtglZTtYPpQPDKARO6ZiG1ugW-DUrIbw&callback=initMap"
     async defer></script>
     
 </head>
 <body>
-    <div id="map"></div>
+    <div id="map" ref="map"></div>
 
-    <script>
-        var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 40.7128, lng: -73.935242},
-          zoom: 8
-        });
-      }
-    </script>
+
+    <!-- <svg width="200", height="200"> -->
+      
+    </svg>
 </body>
 </html>
