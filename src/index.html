@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="../styles/reset.css">
     <link rel="stylesheet" type="text/css" href="../styles/main.css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
@@ -14,23 +15,60 @@
     
   </head>
   <body>
+
+
     <div class="overall-container">
-
+      <h1 id="main-h">Crime Data NYC</h1>
       <div class="options-container">
-        <label for="location">Filter by Location</label>
 
-        <!-- <form > -->
+        <div class="location-filter-container">
 
-        <select id="selector"> 
+        <label for="location">Filter by Location:
+
+          <div>
+
+          <select id="selector" class="selector"> 
             <option selected disabled></option>
             <option value="Bronx">Bronx</option>
             <option value="Manhattan">Manhattan</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+            <option value="Brooklyn">Brooklyn</option>
+            <option value="STATEN ISLAND">Staten Island</option>
           </select>
-          <!-- <input type="submit" value="Choose"> -->
-          <button id="selectButton">Select</button>
-        <!-- </form> -->
+          <button class="button-select" id="locationButton">Select</button>
+        </div>
+
+        </label>
+      </div>
+
+
+        <label for="year">Filter by Year:
+          <div>
+
+          <select id="filter_year" class="selector"> 
+            <option selected disabled></option>
+            <option value="2011">2011</option>
+            <option value="2010">2010</option>
+            <option value="2009">2009</option>
+            <option value="2008">2008</option>
+          </select>
+          <button  class="button-select" id="yearButton">Select</button>
+        </div>
+
+        </label>
+
+        
+        <label for="violation_type">Filter by Violation Type:
+          <div>
+            <select id="filter_violation_type" class="selector"> 
+              <option selected disabled></option>
+              <option value="MISDEMEANOR">Misdemeanor</option>
+              <option value="FELONY">Felony</option>
+              <option value="VIOLATION">Violation</option>
+            </select>
+            <button class="button-select" id="violationBtn">Select</button>
+          </div>
+
+          </label>
 
       </div>  
     </div>

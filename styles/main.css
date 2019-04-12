@@ -13,6 +13,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
+    background: rgb(240, 240, 240);
     display: flex;
     /* flex-direction: column; */
   }
@@ -20,6 +21,7 @@
     width: 80%;
     height: 100%;
   }
+  
   
   .stations, .stations svg {
     position: absolute;
@@ -36,14 +38,97 @@
     fill: brown;
     stroke: black;
     stroke-width: 1.5px;
+    cursor: pointer;
   }
 
   .options-container {
-    width: 790px; 
-    height: 97%;
+    width: 390px; 
+    height: 80%;
     background: rgb(240, 240, 240);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
   }
+  .location-filter-container {
+    /* display: flex; */
+    /* flex-direction: column; */
+  }
+  .location {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+  }
+  label {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    /* background: black; */
+  }
+  .year {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+  }
+  .selector {
+    color: rgb(0, 0, 0);
+    padding: 5px;
+    border-radius: 3%;
+    
+  }
+  .button-select {
+    /* background: blue; */
+    margin-left: 10px;
+    align-items: center;
+    /* width: 93%; */
+    padding: 5px 5px;
+    border-radius: 5px; 
+    border: none;
+    background: rgb(57, 160, 57);
+    font-size: 18px;
+    color: white;
+    margin-top: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .button-select:hover {
+    background: rgb(71, 212, 71);
+  }
+  #main-h {
+    /* background: rgb(63, 73, 85);	 */
+    text-align: center;
+  }
+  .tooltip {	
+    position: absolute;			
+    /* text-align: center;			 */
+    
+    width: 400px;					
+    height: 200px;					
+    padding: 10px;				
+    font: 14px sans-serif;		
+    background: rgb(63, 73, 85);	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;		
+    word-wrap: break-word;
 
+}
+
+.circular {
+  cursor: pointer;
+}
+.text-container {
+  display: flex;
+  flex-direction: column;
+}
+.text-container span {
+  /* margin-bottom: 50px; */
+  /* color: firebrick; */
+  line-height: 25px;
+  color: rgb(240, 240, 240);
+
+}
   /* .overall-container {
     display: flex;
     flex-direction: row;
