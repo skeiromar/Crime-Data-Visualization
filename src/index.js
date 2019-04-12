@@ -96,22 +96,22 @@ document.addEventListener("DOMContentLoaded",() => {
     let samp_data = {"KMAE":[40.7128,-73.935242,"MADERA MUNICIPAL AIRPORT",[26,1,2,5,6,3,2,1,2,7,29,12,3]],
     "KSJC":[40.7122,-73.935244,"SAN JOSE INTERNATIONAL  AIRPORT",[28,1,1,1,6,10,5,3,2,4,14,21,7]]};
     
+
+    let btnS = document.getElementById("selectButton");
+    let selector = document.getElementById("selector");
+    let selected = selector.options[selector.selectedIndex].value;
+
     
    d3.json('../data/crime_detail.json').then(function (data, error) {
 
     let crimeCoords = {};
 
-    let selector = document.getElementById("selector");
-    let selected = selector.options[selector.selectedIndex].value;
-    // debugger
-    if (selected === 'Bronx') {
-     
-        alert('hello');
-    }
 
-    function selected1() {
-        console.log('hello')
-    }
+    // debugger
+
+
+
+   
     for (let i = 0; i < data.length; i++) {
         if (!data[i].lat_lon) {
             continue;
@@ -124,15 +124,41 @@ document.addEventListener("DOMContentLoaded",() => {
         // debugger
     }
 
+    btnS.onclick = function() {
+
+        selected = selector.options[selector.selectedIndex].value;
+        console.log('works');
+            if (selected === 'Bronx') {
+                crimeCoords = {};
+                d3.selectAll("svg").remove();
+                for (let i = 0; i < data.length; i++) {
+                    if (!data[i].lat_lon) {
+                        continue;
+                    }
+                    
+                    // crimeCoords.push(data[i].lat_lon.coordinates);
+                    if (data[i].boro_nm === 'BRONX') {
+                        crimeCoords[i] = data[i].lat_lon.coordinates;
+                        crimeCoords[i].push({boro_nm: data[i].boro_nm});
+                    // debugger
+                    }
+                }
+                // debugger
+          }
+        };
+
     let overlay = new google.maps.OverlayView();
 
     overlay.onAdd = function() {
        let layer = d3.select(this.getPanes().overlayLayer).append('div')
        .attr('class', 'stations');
 
+
+
        overlay.draw = function() {
            // debugger
            let projection = this.getProjection(), padding = 10;
+                
    
                 // debugger
                 let marker = layer.selectAll('svg')
