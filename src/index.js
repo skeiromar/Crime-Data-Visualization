@@ -235,17 +235,7 @@ document.addEventListener("DOMContentLoaded",() => {
     //     // debugger
     // }
 
-    let initialBounds = null;
-    google.maps.event.addListener(map, 'bounds_changed', function() {
-        try {
-            if( initialBounds == null ) {
-                initialBounds = map.getBounds(); 
-                // debugger
-            }
-        } catch( err ) {
-            alert( err );
-        }
-    });
+   
 
     
     let crimeCoordsReturn = crimeCoords(data);
@@ -313,7 +303,19 @@ document.addEventListener("DOMContentLoaded",() => {
         // debugger
     };
 
+    let Bounds = null;
+    let mapZoom = 11;
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+      // debugger
+      mapZoom = map.getZoom();
+      const { north, south, east, west } = map.getBounds().toJSON();
+      Bounds = {
+        northEast: { lat:north, lng: east },
+        southWest: { lat: south, lng: west } };
 
+      // debugger
+                
+    });
 
     let overlay = new google.maps.OverlayView();
 
@@ -322,13 +324,27 @@ document.addEventListener("DOMContentLoaded",() => {
        .attr('class', 'stations');
 
 
-
+      let zoomedOut = false;
        overlay.draw = function() {
-           // debugger
+
+            if (Bounds && mapZoom >= 13 && !zoomedOut) {
+             crimeCoordsReturn =  crimeCoords(data, Bounds);
+              d3.selectAll("svg").remove();
+              zoomedOut = true;
+
+
+            } else if (mapZoom < 13 && zoomedOut) {
+              zoomedOut = false;
+              crimeCoordsReturn =  crimeCoords(data);
+
+            }
+
            let projection = this.getProjection(), padding = 10;
                 
    
-                // debugger
+           // debugger
+      
+                
                 let marker = layer.selectAll('svg')
                 .data(d3.entries(crimeCoordsReturn))
                 .each(transform)

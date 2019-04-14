@@ -26,7 +26,7 @@
   .stations, .stations svg {
     position: absolute;
   }
-  
+ 
   .stations svg {
     width: 60px;
     height: 20px;
@@ -75,6 +75,7 @@
     color: rgb(0, 0, 0);
     padding: 5px;
     border-radius: 3%;
+    width: 150px;
     
   }
   .button-select {
@@ -98,6 +99,8 @@
   #main-h {
     /* background: rgb(63, 73, 85);	 */
     text-align: center;
+    font-size: 42px;
+    
   }
   .tooltip {	
     position: absolute;			
