@@ -251,12 +251,15 @@ document.addEventListener("DOMContentLoaded",() => {
           crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BRONX'));
 
         } else if (selected === 'Manhattan') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'MANHATTAN'));
         } else if (selected === 'Brooklyn') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BROOKLYN'));
         } else if (selected === 'STATEN ISLAND') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'STATEN ISLAND'));
         } 
@@ -266,18 +269,22 @@ document.addEventListener("DOMContentLoaded",() => {
         yrFiltered = yearFilter.options[yearFilter.selectedIndex].value;
         // debugger
         if (yrFiltered === '2011') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2011'));
 
         } else if (yrFiltered === '2010') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2010'));
             
         } else if (yrFiltered === '2009') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2009'));
             
         } else if (yrFiltered === '2008') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2008'));
         } 
@@ -297,15 +304,18 @@ document.addEventListener("DOMContentLoaded",() => {
         violationSelected = violationSelector.options[violationSelector.selectedIndex].value;
         // debugger
         if (violationSelected === 'FELONY') {
+            filtered = true;
             d3.selectAll("svg").remove();
             
             crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
 
         } else if (violationSelected === 'MISDEMEANOR') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'MISDEMEANOR'));
             
         } else if (violationSelected === 'VIOLATION') {
+            filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'VIOLATION'));
         } 
@@ -369,6 +379,7 @@ document.addEventListener("DOMContentLoaded",() => {
                 .attr("r", 6)
                 .attr("cx", padding)
                 .attr("cy", padding)
+                .style("z-index", 2)		
                 .on("click", function(d) {	
                     
                     let dataOfClick = d3.event.path[0].__data__;
