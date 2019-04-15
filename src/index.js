@@ -268,7 +268,12 @@ document.addEventListener("DOMContentLoaded",() => {
     btnyear.onclick = function() {
         yrFiltered = yearFilter.options[yearFilter.selectedIndex].value;
         // debugger
-        if (yrFiltered === '2011') {
+        if (yrFiltered === '2018') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2018'));
+
+        } else if (yrFiltered === '2011') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2011'));
