@@ -211,6 +211,7 @@ document.addEventListener("DOMContentLoaded",() => {
 
     let btnL = document.getElementById("locationButton");
     let btnyear = document.getElementById("yearButton");
+    let selectAllBtn = document.querySelector('.button-select-showall');
 
     let selector = document.getElementById("selector");
     let selected = selector.options[selector.selectedIndex].value;
@@ -245,9 +246,9 @@ document.addEventListener("DOMContentLoaded",() => {
 
         selected = selector.options[selector.selectedIndex].value;
         if (selected === 'Bronx') {
-            d3.selectAll("svg").remove();
-            filtered = true;
-            crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BRONX'));
+          filtered = true;
+          d3.selectAll("svg").remove();
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BRONX'));
 
         } else if (selected === 'Manhattan') {
             d3.selectAll("svg").remove();
@@ -282,6 +283,11 @@ document.addEventListener("DOMContentLoaded",() => {
         } 
     };
 
+    selectAllBtn.onclick = function() {
+      crimeCoordsReturn = crimeCoords(data);
+      filtered = false;
+    };
+
 
     let violationBtn = document.getElementById("violationBtn");
     let violationSelector = document.getElementById("filter_violation_type");
@@ -292,6 +298,7 @@ document.addEventListener("DOMContentLoaded",() => {
         // debugger
         if (violationSelected === 'FELONY') {
             d3.selectAll("svg").remove();
+            
             crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
 
         } else if (violationSelected === 'MISDEMEANOR') {
@@ -329,13 +336,13 @@ document.addEventListener("DOMContentLoaded",() => {
       let zoomedOut = false;
        overlay.draw = function() {
 
-            if (Bounds && mapZoom >= 13 && !zoomedOut) {
+            if (Bounds && mapZoom >= 13 && !zoomedOut && !filtered) {
              crimeCoordsReturn =  crimeCoords(data, Bounds);
               d3.selectAll("svg").remove();
               zoomedOut = true;
 
 
-            } else if (mapZoom < 13 && zoomedOut) {
+            } else if (mapZoom < 13 && zoomedOut && !filtered) {
               zoomedOut = false;
               crimeCoordsReturn =  crimeCoords(data);
 

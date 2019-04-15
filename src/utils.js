@@ -10,7 +10,7 @@ export const crimeCoords = (data, filterBy) => {
         
         // crimeCoords.push(data[i].lat_lon.coordinates);
         if (filterBy) {
-            debugger
+            // debugger
             if (
                 data[i].lat_lon.coordinates[1] > filterBy.southWest.lat &&
                 data[i].lat_lon.coordinates[0] > filterBy.southWest.lng && 

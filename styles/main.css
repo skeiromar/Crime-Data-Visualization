@@ -96,6 +96,25 @@
   .button-select:hover {
     background: rgb(71, 212, 71);
   }
+  .button-select-showall {
+      /* background: blue; */
+      margin-left: -31px;
+      align-items: center;
+      /* width: 93%; */
+      padding: 5px 5px;
+      border-radius: 5px; 
+      border: none;
+      background: rgb(57, 160, 57);
+      font-size: 18px;
+      color: white;
+      margin-top: 10px;
+      box-sizing: border-box;
+      cursor: pointer;
+      width: 217px;
+  }
+  .button-select-showall:hover {
+    background: rgb(71, 212, 71);
+  }
   #main-h {
     /* background: rgb(63, 73, 85);	 */
     text-align: center;
