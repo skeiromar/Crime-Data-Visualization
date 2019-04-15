@@ -239,12 +239,14 @@ document.addEventListener("DOMContentLoaded",() => {
 
     
     let crimeCoordsReturn = crimeCoords(data);
+    let filtered = false;
 
     btnL.onclick = function() {
 
         selected = selector.options[selector.selectedIndex].value;
         if (selected === 'Bronx') {
             d3.selectAll("svg").remove();
+            filtered = true;
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BRONX'));
 
         } else if (selected === 'Manhattan') {
