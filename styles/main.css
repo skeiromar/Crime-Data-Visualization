@@ -126,7 +126,7 @@
     /* text-align: center;			 */
     
     width: 400px;					
-    height: 200px;					
+    /* height: 200px;					 */
     padding: 10px;				
     font: 14px sans-serif;		
     background: rgb(63, 73, 85);	
@@ -155,3 +155,43 @@
     display: flex;
     flex-direction: row;
   } */
+
+
+  .github-logo-img {
+    display: flex;
+    margin-left: 10px;
+    /* align-self: center; */
+    left: 45%;
+    /* position: fixed; */
+    width: 55px;
+    height: 100px;
+}
+.github-logo-img:hover {
+    transform: rotate(360deg);
+    transition: all 1s ease;
+}
+
+.ln-logo-img {
+    /* position: fixed; */
+    /* margin-left: -20px; */
+    /* margin-right: 50px; */
+    display: flex;
+    margin-right: 30px;
+    width: 100px;
+    padding: 0;
+}
+.ln-logo-img:hover {
+    transform: rotate(360deg);
+    transition: all 1s ease;
+}
+.about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#abt {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 30px;
+  margin-top: 100px;
+}

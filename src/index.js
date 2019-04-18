@@ -254,6 +254,10 @@ document.addEventListener("DOMContentLoaded",() => {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'MANHATTAN'));
+        } else if (selected === 'Queens') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'QUEENS'));
         } else if (selected === 'Brooklyn') {
             filtered = true;
             d3.selectAll("svg").remove();
@@ -292,7 +296,15 @@ document.addEventListener("DOMContentLoaded",() => {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2008'));
-        } 
+        } else if (yrFiltered === '2007') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2007'));
+        } else if (yrFiltered === '2006') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2006'));
+        }
     };
 
     selectAllBtn.onclick = function() {
@@ -351,17 +363,20 @@ document.addEventListener("DOMContentLoaded",() => {
       let zoomedOut = false;
        overlay.draw = function() {
 
-            if (Bounds && mapZoom >= 13 && !zoomedOut && !filtered) {
+            console.log(Bounds, mapZoom, !zoomedOut, filtered);
+
+            if (Bounds  && !zoomedOut && !filtered) {
              crimeCoordsReturn =  crimeCoords(data, Bounds);
               d3.selectAll("svg").remove();
-              zoomedOut = true;
+              // zoomedOut = true;
 
 
-            } else if (mapZoom < 13 && zoomedOut && !filtered) {
-              zoomedOut = false;
-              crimeCoordsReturn =  crimeCoords(data);
+            } 
+            // else if (mapZoom < 13 && !zoomedOut && !filtered) {
+            //   // zoomedOut = false;
+            //   crimeCoordsReturn =  crimeCoords(data);
 
-            }
+            // }
 
            let projection = this.getProjection(), padding = 10;
                 
@@ -389,19 +404,19 @@ document.addEventListener("DOMContentLoaded",() => {
                     
                     let dataOfClick = d3.event.path[0].__data__;
                     
-                    // debugger	
                     const crimeObj  = dataOfClick.value[2];
-
+                    // debugger	
+                    
                     div.transition()		
                         .duration(200)		
                         .style("opacity", .9);
                         div.html(`
                         <div class='text-container'>
                           <span>
-                            Offsense description: ${dataOfClick.value[2].offenseDescription.toLowerCase()}
+                            Offsense Description: ${dataOfClick.value[2].offenseDescription.toLowerCase()}
                           </span>   
                           <span>
-                            Police description: ${dataOfClick.value[2].policeDescription}
+                            Police Description: ${dataOfClick.value[2].policeDescription}
                           </span>
                           <span>
                             Complaint Date: ${dataOfClick.value[2].date.slice(0,10)} : ${dataOfClick.value[2].complaintTime}
@@ -411,6 +426,12 @@ document.addEventListener("DOMContentLoaded",() => {
                           </span>
                           <span>
                             Violation Type: ${crimeObj.violationType}
+                          </span>
+                          <span>
+                            Premier Description: ${crimeObj.premierDescription}
+                          </span>
+                          <span>
+                            Occurence Location Description: ${crimeObj.occurenceLocDescription}
                           </span>
                         </div>`)	
                         .style("left", (d3.event.pageX) + "px")		
@@ -427,7 +448,8 @@ document.addEventListener("DOMContentLoaded",() => {
                     div.transition()		
                         .duration(500)		
                         .style("opacity", 0);	
-                });
+                })
+                ;
         
                 
 

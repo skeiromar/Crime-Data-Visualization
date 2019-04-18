@@ -25,6 +25,8 @@ export const crimeCoords = (data, filterBy) => {
                     policeDescription: data[i].pd_desc,
                     complaintTime: data[i].cmplnt_fr_tm,
                     violationType: data[i].law_cat_cd,
+                    premierDescription: data[i].prem_typ_desc,
+                    occurenceLocDescription: data[i].loc_of_occur_desc
                     
                 });
             }
@@ -38,7 +40,8 @@ export const crimeCoords = (data, filterBy) => {
                 policeDescription: data[i].pd_desc,
                 complaintTime: data[i].cmplnt_fr_tm,
                 violationType: data[i].law_cat_cd,
-                
+                premierDescription: data[i].prem_typ_desc,
+                occurenceLocDescription: data[i].loc_of_occur_desc
             });
         }
             
