@@ -1,5 +1,6 @@
 import message from './test';
 import {crimeCoords} from './utils';
+import {crime} from '../data/crime_det';
 
 document.addEventListener("DOMContentLoaded",() => {
 
@@ -220,8 +221,7 @@ document.addEventListener("DOMContentLoaded",() => {
     let yrFiltered = yearFilter.options[yearFilter.selectedIndex].value ;
 
     
-   d3.json('../data/crime_detail.json').then(function (data, error) {
-
+   function render(data, error) {
     // let crimeCoords = {};
    
     // for (let i = 0; i < data.length; i++) {
@@ -461,7 +461,8 @@ document.addEventListener("DOMContentLoaded",() => {
    };
 
    overlay.setMap(map);
-   });
+   }
+   render(crime);
     
 //     let overlay = new google.maps.OverlayView();
 
