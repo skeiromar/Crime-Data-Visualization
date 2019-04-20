@@ -392,22 +392,7 @@ document.addEventListener("DOMContentLoaded",() => {
       dragEnd = false;    
       d3.selectAll('.tooltip').remove();
 
-      // div.remove();
-      // debugger
-      // d3.select(d3.select('.text-container').parentNode).transition()		
-      // .duration(200)		
-      // .style("opacity", 0);	
-
     });
-
-    // google.maps.event.addListener(map, 'drag', function() {
-    //   dragEnd = false;    
-    //   d3.selectAll('.text-container').transition()		
-    //   .duration(500)		
-    //   .style("opacity", 0);	
-
-    // });
-
     
     
 
