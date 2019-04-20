@@ -222,21 +222,7 @@ document.addEventListener("DOMContentLoaded",() => {
 
     
    function render(data, error) {
-    // let crimeCoords = {};
-   
-    // for (let i = 0; i < data.length; i++) {
-    //     if (!data[i].lat_lon) {
-    //         continue;
-    //     }
-        
-    //     // crimeCoords.push(data[i].lat_lon.coordinates);
 
-    //         crimeCoords[i] = data[i].lat_lon.coordinates;
-    //         crimeCoords[i].push({boro_nm: data[i].boro_nm});
-    //     // debugger
-    // }
-
-   
 
     
     let crimeCoordsReturn = crimeCoords(data);
