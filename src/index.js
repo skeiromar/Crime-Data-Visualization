@@ -447,7 +447,6 @@ document.addEventListener("DOMContentLoaded",() => {
 
           crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2018'), Bounds);
           d3.selectAll("svg").remove();
-          map.setZoom(map.getZoom());
         }
               
         let projection = this.getProjection(), padding = 10;
