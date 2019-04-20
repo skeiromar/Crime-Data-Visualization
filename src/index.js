@@ -241,6 +241,8 @@ document.addEventListener("DOMContentLoaded",() => {
     
     let crimeCoordsReturn = crimeCoords(data);
     let filtered = false;
+    let filterType = null;
+
 
     btnL.onclick = function() {
 
@@ -311,6 +313,7 @@ document.addEventListener("DOMContentLoaded",() => {
     selectAllBtn.onclick = function() {
       crimeCoordsReturn = crimeCoords(data);
       filtered = false;
+      filterType = null;
     };
 
     // overlay defined here
@@ -327,7 +330,8 @@ document.addEventListener("DOMContentLoaded",() => {
         if (violationSelected === 'FELONY') {
             filtered = true;
             d3.selectAll("svg").remove();
-            crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
+            filterType = 'Felony';
+            // crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
 
         } else if (violationSelected === 'MISDEMEANOR') {
             filtered = true;
@@ -360,12 +364,14 @@ document.addEventListener("DOMContentLoaded",() => {
     google.maps.event.addListener(map, 'dragend', function() {
       dragEnd = true;    
     });
-
+    let div;
     google.maps.event.addListener(map, 'dragstart', function() {
       dragEnd = false;    
-      d3.selectAll('div > .text-container').transition()		
-      .duration(200)		
-      .style("opacity", 0);	
+      // div.remove();
+      // debugger
+      // d3.select(d3.select('.text-container').parentNode).transition()		
+      // .duration(200)		
+      // .style("opacity", 0);	
 
     });
 
@@ -392,20 +398,17 @@ document.addEventListener("DOMContentLoaded",() => {
       let draw = function() {
 
         
-        if (Bounds  && !zoomedOut && !filtered && dragEnd) {
+        if (Bounds && !filtered && dragEnd) {
           crimeCoordsReturn =  crimeCoords(data, Bounds);
           d3.selectAll("svg").remove();
               // zoomedOut = true;
               
               
-            } 
-            // else if (mapZoom < 13 && !zoomedOut && !filtered) {
-              //   // zoomedOut = false;
-              //   crimeCoordsReturn =  crimeCoords(data);
+        } else if (filterType === 'Felony' && filtered && dragEnd) {
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
+        }
               
-              // }
-              
-              let projection = this.getProjection(), padding = 10;
+        let projection = this.getProjection(), padding = 10;
               
               
               // debugger
@@ -422,7 +425,7 @@ document.addEventListener("DOMContentLoaded",() => {
             .each(transform)
             .attr('class', 'marker');
 
-            var div = d3.select("body").append("div")	
+            div = d3.select("body").append("div")	
                 .attr("class", "tooltip")				
                 .style("opacity", 0);
     
@@ -476,16 +479,13 @@ document.addEventListener("DOMContentLoaded",() => {
                     // });
                             
                 })		
-            .on("mouseout", function(d) {		
+                .on("mouseout", function(d) {		
                 div.transition()		
                     .duration(500)		
                     .style("opacity", 0);	
             })
             ;
     
-            
-
-
             marker.append("text")
             .attr("x", padding + 7)
             .attr("y", padding)
