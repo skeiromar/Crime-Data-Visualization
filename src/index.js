@@ -249,6 +249,7 @@ document.addEventListener("DOMContentLoaded",() => {
           filtered = true;
           d3.selectAll("svg").remove();
           crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BRONX'));
+          
 
         } else if (selected === 'Manhattan') {
             filtered = true;
@@ -312,6 +313,9 @@ document.addEventListener("DOMContentLoaded",() => {
       filtered = false;
     };
 
+    // overlay defined here
+    let overlay = new google.maps.OverlayView();
+
 
     let violationBtn = document.getElementById("violationBtn");
     let violationSelector = document.getElementById("filter_violation_type");
@@ -323,7 +327,6 @@ document.addEventListener("DOMContentLoaded",() => {
         if (violationSelected === 'FELONY') {
             filtered = true;
             d3.selectAll("svg").remove();
-            
             crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
 
         } else if (violationSelected === 'MISDEMEANOR') {
@@ -352,8 +355,30 @@ document.addEventListener("DOMContentLoaded",() => {
       // debugger
                 
     });
+    let dragEnd = true; 
 
-    let overlay = new google.maps.OverlayView();
+    google.maps.event.addListener(map, 'dragend', function() {
+      dragEnd = true;    
+    });
+
+    google.maps.event.addListener(map, 'dragstart', function() {
+      dragEnd = false;    
+      d3.selectAll('div > .text-container').transition()		
+      .duration(200)		
+      .style("opacity", 0);	
+
+    });
+
+    // google.maps.event.addListener(map, 'drag', function() {
+    //   dragEnd = false;    
+    //   d3.selectAll('.text-container').transition()		
+    //   .duration(500)		
+    //   .style("opacity", 0);	
+
+    // });
+
+    
+    
 
     overlay.onAdd = function() {
        let layer = d3.select(this.getPanes().overlayMouseTarget).append('div')
@@ -361,124 +386,142 @@ document.addEventListener("DOMContentLoaded",() => {
 
 
       let zoomedOut = false;
-       overlay.draw = function() {
+      
+      let initial = true; 
+      let count = 0;
+      let draw = function() {
 
-            console.log(Bounds, mapZoom, !zoomedOut, filtered);
-
-            if (Bounds  && !zoomedOut && !filtered) {
-             crimeCoordsReturn =  crimeCoords(data, Bounds);
-              d3.selectAll("svg").remove();
+        
+        if (Bounds  && !zoomedOut && !filtered && dragEnd) {
+          crimeCoordsReturn =  crimeCoords(data, Bounds);
+          d3.selectAll("svg").remove();
               // zoomedOut = true;
-
-
+              
+              
             } 
             // else if (mapZoom < 13 && !zoomedOut && !filtered) {
-            //   // zoomedOut = false;
-            //   crimeCoordsReturn =  crimeCoords(data);
+              //   // zoomedOut = false;
+              //   crimeCoordsReturn =  crimeCoords(data);
+              
+              // }
+              
+              let projection = this.getProjection(), padding = 10;
+              
+              
+              // debugger
+        
+              
+          if (dragEnd) {
+            
+            console.log(Bounds, mapZoom, !zoomedOut, filtered, dragEnd, count);
+            initial = false;
+            let marker = layer.selectAll('svg')
+            .data(d3.entries(crimeCoordsReturn))
+            .each(transform)
+            .enter().append('svg')
+            .each(transform)
+            .attr('class', 'marker');
 
-            // }
-
-           let projection = this.getProjection(), padding = 10;
+            var div = d3.select("body").append("div")	
+                .attr("class", "tooltip")				
+                .style("opacity", 0);
+    
+            marker.append("circle")
+            .attr("r", 6)
+            .attr("cx", padding)
+            .attr("cy", padding)
+            .style("z-index", 2)		
+            .on("click", function(d) {	
                 
+                let dataOfClick = d3.event.path[0].__data__;
+                
+                const crimeObj  = dataOfClick.value[2];
+                // debugger	
+                
+                div.transition()		
+                    .duration(200)		
+                    // .attr('class', 'identifier')
+                    .style("opacity", .9);
+                    div.html(`
+                    <div class='text-container'>
+                      <span>
+                        Offsense Description: ${dataOfClick.value[2].offenseDescription.toLowerCase()}
+                      </span>   
+                      <span>
+                        Police Description: ${dataOfClick.value[2].policeDescription}
+                      </span>
+                      <span>
+                        Complaint Date: ${dataOfClick.value[2].date.slice(0,10)} : ${dataOfClick.value[2].complaintTime}
+                      </span>
+                      <span>
+                        Borough: ${crimeObj.boro_nm}
+                      </span>
+                      <span>
+                        Violation Type: ${crimeObj.violationType}
+                      </span>
+                      <span>
+                        Premier Description: ${crimeObj.premierDescription}
+                      </span>
+                      <span>
+                        Occurence Location Description: ${crimeObj.occurenceLocDescription}
+                      </span>
+                    </div>`)	
+                    .style("left", (d3.event.pageX) + "px")		
+                    .style("top", (d3.event.pageY - 28) + "px");
+                    // debugger
+                    // google.maps.event.addListener(map, 'bounds_changed', function() {
+                    //     div.html("<br/>"  + 'interested in some crime?')	
+                    // .style("left", (d3.event.pageX) + "px")		
+                    // .style("top", (d3.event.pageY - 28) + "px");
+                    // });
+                            
+                })		
+            .on("mouseout", function(d) {		
+                div.transition()		
+                    .duration(500)		
+                    .style("opacity", 0);	
+            })
+            ;
+    
+            
+
+
+            marker.append("text")
+            .attr("x", padding + 7)
+            .attr("y", padding)
+            .attr("dy", ".31em")
+            .text(function(d) { 
+                // debugger    
+                // return d.value[2].boro_nm; 
+            });
    
-           // debugger
-      
-                
-                let marker = layer.selectAll('svg')
-                .data(d3.entries(crimeCoordsReturn))
-                .each(transform)
-                .enter().append('svg')
-                .each(transform)
-                .attr('class', 'marker');
 
-                var div = d3.select("body").append("div")	
-                    .attr("class", "tooltip")				
-                    .style("opacity", 0);
+        // }
+        function transform(d) {
+            //  debugger
+
+            d = new google.maps.LatLng(d.value[1], d.value[0]);
+            d = projection.fromLatLngToDivPixel(d);
+            return d3.select(this)
+                // .transition().duration(10)
+                .style("left", (d.x - padding) + "px")
+                .style("top", (d.y - padding) + "px");
+        }
+
         
-                marker.append("circle")
-                .attr("r", 6)
-                .attr("cx", padding)
-                .attr("cy", padding)
-                .style("z-index", 2)		
-                .on("click", function(d) {	
-                    
-                    let dataOfClick = d3.event.path[0].__data__;
-                    
-                    const crimeObj  = dataOfClick.value[2];
-                    // debugger	
-                    
-                    div.transition()		
-                        .duration(200)		
-                        .style("opacity", .9);
-                        div.html(`
-                        <div class='text-container'>
-                          <span>
-                            Offsense Description: ${dataOfClick.value[2].offenseDescription.toLowerCase()}
-                          </span>   
-                          <span>
-                            Police Description: ${dataOfClick.value[2].policeDescription}
-                          </span>
-                          <span>
-                            Complaint Date: ${dataOfClick.value[2].date.slice(0,10)} : ${dataOfClick.value[2].complaintTime}
-                          </span>
-                          <span>
-                            Borough: ${crimeObj.boro_nm}
-                          </span>
-                          <span>
-                            Violation Type: ${crimeObj.violationType}
-                          </span>
-                          <span>
-                            Premier Description: ${crimeObj.premierDescription}
-                          </span>
-                          <span>
-                            Occurence Location Description: ${crimeObj.occurenceLocDescription}
-                          </span>
-                        </div>`)	
-                        .style("left", (d3.event.pageX) + "px")		
-                        .style("top", (d3.event.pageY - 28) + "px");
-                        // debugger
-                        // google.maps.event.addListener(map, 'bounds_changed', function() {
-                        //     div.html("<br/>"  + 'interested in some crime?')	
-                        // .style("left", (d3.event.pageX) + "px")		
-                        // .style("top", (d3.event.pageY - 28) + "px");
-                        // });
-                        				
-                    })		
-                .on("mouseout", function(d) {		
-                    div.transition()		
-                        .duration(500)		
-                        .style("opacity", 0);	
-                })
-                ;
-        
-                
-
-
-                marker.append("text")
-                .attr("x", padding + 7)
-                .attr("y", padding)
-                .attr("dy", ".31em")
-                .text(function(d) { 
-                    // debugger    
-                    // return d.value[2].boro_nm; 
-                });
-       
-
-            // }
-            function transform(d) {
-                //  debugger
-
-                d = new google.maps.LatLng(d.value[1], d.value[0]);
-                d = projection.fromLatLngToDivPixel(d);
-                return d3.select(this)
-                    // .transition().duration(10)
-                    .style("left", (d.x - padding) + "px")
-                    .style("top", (d.y - padding) + "px");
-            }
+    }      
 
         //    debugger
 
        };
+       overlay.draw = draw;
+      //  setInterval(() => {
+      //    if (overlay.draw) {
+      //      overlay.draw = null;
+      //    } else {
+      //       overlay.draw = draw;
+      //    }
+      //  }, 100);
 
    };
 
@@ -486,41 +529,4 @@ document.addEventListener("DOMContentLoaded",() => {
    }
    render(crime);
     
-//     let overlay = new google.maps.OverlayView();
-
-
-//     overlay.onAdd = function() {
-//        let layer = d3.select(this.getPanes().overlayMouseTarget).append('div')
-//        .attr('class', 'stations');
-
-//        overlay.draw = function() {
-//            let projection = this.getProjection(), padding = 10;
-
-//            let marker = layer.selectAll('svg')
-//            .data(d3.entries(samp_data))
-//            .each(transform)
-//            .enter().append('svg')
-//            .each(transform)
-//            .attr('class', 'marker');
-
-//            marker.append("circle")
-//            .attr("r", 4.5)
-//            .attr("cx", padding)
-//            .attr("cy", padding);
-
-//            function transform(d) {
-
-//                d = new google.maps.LatLng(d.value[0], d.value[1]);
-//                d = projection.fromLatLngToDivPixel(d);
-//                return d3.select(this)
-//                    .style("left", (d.x - padding) + "px")
-//                    .style("top", (d.y - padding) + "px");
-//            }
-
-//        };
-
-//    };
-
-//    overlay.setMap(map);
-
 });
