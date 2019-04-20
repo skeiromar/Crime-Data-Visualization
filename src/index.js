@@ -251,24 +251,34 @@ document.addEventListener("DOMContentLoaded",() => {
           filtered = true;
           d3.selectAll("svg").remove();
           crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BRONX'));
-          
+          map.setZoom(map.getZoom());
+          filterType = null;
 
         } else if (selected === 'Manhattan') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'MANHATTAN'));
+            map.setZoom(map.getZoom());
+            filterType = null;
+
         } else if (selected === 'Queens') {
           filtered = true;
           d3.selectAll("svg").remove();
           crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'QUEENS'));
+          map.setZoom(map.getZoom());
+          filterType = null;
         } else if (selected === 'Brooklyn') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BROOKLYN'));
+            map.setZoom(map.getZoom());
+            filterType = null;
         } else if (selected === 'STATEN ISLAND') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'STATEN ISLAND'));
+            map.setZoom(map.getZoom());
+            filterType = null;
         } 
     };
 
@@ -278,42 +288,62 @@ document.addEventListener("DOMContentLoaded",() => {
         if (yrFiltered === '2018') {
           filtered = true;
           d3.selectAll("svg").remove();
-          crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2018'));
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2018'), Bounds);
+          map.setZoom(map.getZoom());
+          filterType = '2018';
+
 
         } else if (yrFiltered === '2011') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2011'));
+            map.setZoom(map.getZoom());
+            filterType = null;
 
         } else if (yrFiltered === '2010') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2010'));
+            map.setZoom(map.getZoom());
+            filterType = null;
+
             
         } else if (yrFiltered === '2009') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2009'));
+            map.setZoom(map.getZoom());
+            filterType = null;
             
         } else if (yrFiltered === '2008') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2008'));
+            map.setZoom(map.getZoom());
+            filterType = null;
         } else if (yrFiltered === '2007') {
           filtered = true;
           d3.selectAll("svg").remove();
           crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2007'));
+          map.setZoom(map.getZoom());
+          filterType = null;
         } else if (yrFiltered === '2006') {
           filtered = true;
           d3.selectAll("svg").remove();
           crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2006'));
+          map.setZoom(map.getZoom());
+          filterType = null;
         }
+
+
     };
 
     selectAllBtn.onclick = function() {
       crimeCoordsReturn = crimeCoords(data);
       filtered = false;
       filterType = null;
+      map.setZoom(map.getZoom());
+      
     };
 
     // overlay defined here
@@ -331,17 +361,24 @@ document.addEventListener("DOMContentLoaded",() => {
             filtered = true;
             d3.selectAll("svg").remove();
             filterType = 'Felony';
-            // crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
+            crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
+            map.setZoom(map.getZoom());
+            filterType = null;
 
         } else if (violationSelected === 'MISDEMEANOR') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'MISDEMEANOR'));
-            
+            // map.fitBounds(map.getBounds());
+            map.setZoom(map.getZoom());
+            filterType = null;
+
         } else if (violationSelected === 'VIOLATION') {
             filtered = true;
             d3.selectAll("svg").remove();
             crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'VIOLATION'));
+            map.setZoom(map.getZoom());
+            filterType = null;
         } 
         // debugger
     };
@@ -367,6 +404,8 @@ document.addEventListener("DOMContentLoaded",() => {
     let div;
     google.maps.event.addListener(map, 'dragstart', function() {
       dragEnd = false;    
+      d3.selectAll('.tooltip').remove();
+
       // div.remove();
       // debugger
       // d3.select(d3.select('.text-container').parentNode).transition()		
@@ -404,8 +443,11 @@ document.addEventListener("DOMContentLoaded",() => {
               // zoomedOut = true;
               
               
-        } else if (filterType === 'Felony' && filtered && dragEnd) {
-          crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
+        } else if (filterType === '2018' && filtered && dragEnd && Bounds) {
+
+          crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2018'), Bounds);
+          d3.selectAll("svg").remove();
+          map.setZoom(map.getZoom());
         }
               
         let projection = this.getProjection(), padding = 10;
@@ -483,6 +525,7 @@ document.addEventListener("DOMContentLoaded",() => {
                 div.transition()		
                     .duration(500)		
                     .style("opacity", 0);	
+
             })
             ;
     
