@@ -428,7 +428,7 @@ document.addEventListener("DOMContentLoaded",() => {
               
           if (dragEnd) {
             
-            console.log(Bounds, mapZoom, !zoomedOut, filtered, dragEnd, count);
+            // console.log(Bounds, mapZoom, !zoomedOut, filtered, dragEnd, count);
             initial = false;
             let marker = layer.selectAll('svg')
             .data(d3.entries(crimeCoordsReturn))
