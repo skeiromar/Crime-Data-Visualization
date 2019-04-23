@@ -43,8 +43,9 @@ This helper method shapes the passed data into a form that can be used by D3 to 
 
 ![Filter Code Snippet](readme_resources/filter_code_snip.png)
 
-![Splash Image](readme_resources/crime_data.png)
 
+Screen the visitor is welcomed by
+![Splash Image](readme_resources/crime_data.png)
 
 
 Clicking any dot shows the details of that crime
