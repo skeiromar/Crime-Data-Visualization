@@ -403,33 +403,40 @@ document.addEventListener("DOMContentLoaded",() => {
 
       let zoomedOut = false;
       
-      let initial = true; 
       let count = 0;
       let draw = function() {
 
         
-        if (Bounds && !filtered && dragEnd) {
-          crimeCoordsReturn =  crimeCoords(data, Bounds);
-          d3.selectAll("svg").remove();
-              // zoomedOut = true;
-              
-              
-        } else if (filterType === '2018' && filtered && dragEnd && Bounds) {
-
-          crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2018'), Bounds);
-          d3.selectAll("svg").remove();
-        }
-              
-        let projection = this.getProjection(), padding = 10;
-              
-              
-              // debugger
         
-              
-          if (dragEnd) {
+        
+        // debugger
+        
+        
+        if (dragEnd) {
+          
+            if (Bounds && !filtered && dragEnd) {
+              crimeCoordsReturn =  crimeCoords(data, Bounds);
+              d3.selectAll("svg").remove();
+                  // zoomedOut = true;
+                  
+                  
+            } else if (filterType === '2018' && filtered && dragEnd && Bounds) {
+    
+              crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2018'), Bounds);
+              d3.selectAll("svg").remove();
+            }
+                  
+            let projection = this.getProjection(), padding = 10;
+
+            const transform = function(d) {
+
+              d = new google.maps.LatLng(d.value[1], d.value[0]);
+              d = projection.fromLatLngToDivPixel(d);
+              return d3.select(this)
+                  .style("left", (d.x - padding) + "px")
+                  .style("top", (d.y - padding) + "px");
+            };
             
-            // console.log(Bounds, mapZoom, !zoomedOut, filtered, dragEnd, count);
-            initial = false;
             let marker = layer.selectAll('svg')
             .data(d3.entries(crimeCoordsReturn))
             .each(transform)
@@ -451,11 +458,9 @@ document.addEventListener("DOMContentLoaded",() => {
                 let dataOfClick = d3.event.path[0].__data__;
                 
                 const crimeObj  = dataOfClick.value[2];
-                // debugger	
                 
                 div.transition()		
                     .duration(200)		
-                    // .attr('class', 'identifier')
                     .style("opacity", .9);
                     div.html(`
                     <div class='text-container'>
@@ -496,30 +501,15 @@ document.addEventListener("DOMContentLoaded",() => {
                     .duration(500)		
                     .style("opacity", 0);	
 
-            })
-            ;
+            });
     
             marker.append("text")
             .attr("x", padding + 7)
             .attr("y", padding)
             .attr("dy", ".31em")
             .text(function(d) { 
-                // debugger    
-                // return d.value[2].boro_nm; 
             });
-   
-
-        // }
-        function transform(d) {
-            //  debugger
-
-            d = new google.maps.LatLng(d.value[1], d.value[0]);
-            d = projection.fromLatLngToDivPixel(d);
-            return d3.select(this)
-                // .transition().duration(10)
-                .style("left", (d.x - padding) + "px")
-                .style("top", (d.y - padding) + "px");
-        }
+  
 
         
     }      

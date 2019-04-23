@@ -3,6 +3,14 @@
 Link to live site:
 - https://skeiromar.github.io/Crime-Data-Visualization/
 
+### Technologies
+
+This project is implemented with the following technologies:
+
+- `JavaScript` and `D3` for logic
+- `HTML5` for rendering the page
+- `Google Maps API` and `D3` for rendering the map and its elements
+
 ### Background
 
 Crime data visualization is a visualization website that shows the crime data in NYC from 2006 to 2018 It is useful for 
@@ -30,29 +38,15 @@ By default you will be taken to a map of NYC with crime data as various svg mark
 - [x] Filter by types of crimes - display data based on the type of crime
 
 
-### Screenshot
+### Screenshots
+This helper method shapes the passed data into a form that can be used by D3 to render onto Google Maps either by Google Maps bounds or otherwise. 
+
+![Filter Code Snippet](readme_resources/filter_code_snip.png)
 
 ![Splash Image](readme_resources/crime_data.png)
+
+
 
 Clicking any dot shows the details of that crime
 ![Marker Popup](readme_resources/clicking_marker.png)
 
-
-### Technologies
-
-This project is implemented with the following technologies:
-
-- `JavaScript` and `D3` for logic
-- `HTML5` for rendering the page
-- `Google Maps API` and `D3` for rendering the map and its elements
-
-
-### Implementation Timeline 
-
-**Day 1**: Setup all necessary Node modules, including webpack. Set the default files and get the map to render on the page.
-
-**Day 2**: Spend the day learning how to integrate JSON API with Google Maps and how to fine tune the data displayed on the map.
-
-**Day 3**: Get the Map to show with D3 markers, a UI on the left side and other details.
-
-**Day 4**: Get the UI to work harmoniusly with the map to update information according to the parameters within the UI. Set the pop up of a click to display various information regarding the map.

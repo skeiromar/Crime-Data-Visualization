@@ -7,10 +7,7 @@ export const crimeCoords = (data, filterBy) => {
         if (!data[i].lat_lon) {
             continue;
         }
-        
-        // crimeCoords.push(data[i].lat_lon.coordinates);
         if (filterBy) {
-            // debugger
             if (
                 data[i].lat_lon.coordinates[1] > filterBy.southWest.lat &&
                 data[i].lat_lon.coordinates[0] > filterBy.southWest.lng && 
@@ -44,8 +41,6 @@ export const crimeCoords = (data, filterBy) => {
                 occurenceLocDescription: data[i].loc_of_occur_desc
             });
         }
-            
-        // debugger
     }
 
     return crimeCoords;
