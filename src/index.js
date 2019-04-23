@@ -371,8 +371,10 @@ document.addEventListener("DOMContentLoaded",() => {
 
     let Bounds = null;
     let mapZoom = 11;
+    let isZooming = true;
     google.maps.event.addListener(map, 'bounds_changed', function() {
       // debugger
+      isZooming = false;
       mapZoom = map.getZoom();
       const { north, south, east, west } = map.getBounds().toJSON();
       Bounds = {
@@ -382,6 +384,10 @@ document.addEventListener("DOMContentLoaded",() => {
       // debugger
                 
     });
+    google.maps.event.addListener(map, 'idle', function() {
+      isZooming = true;
+    });
+    
     let dragEnd = true; 
 
     google.maps.event.addListener(map, 'dragend', function() {
@@ -412,7 +418,7 @@ document.addEventListener("DOMContentLoaded",() => {
         // debugger
         
         
-        if (dragEnd) {
+        if (dragEnd && isZooming) {
           
             if (Bounds && !filtered && dragEnd) {
               crimeCoordsReturn =  crimeCoords(data, Bounds);
