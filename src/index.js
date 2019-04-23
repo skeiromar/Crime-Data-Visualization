@@ -418,7 +418,7 @@ document.addEventListener("DOMContentLoaded",() => {
         // debugger
         
         
-        if (dragEnd && isZooming) {
+        if (dragEnd || isZooming) {
           
             if (Bounds && !filtered && dragEnd) {
               crimeCoordsReturn =  crimeCoords(data, Bounds);
