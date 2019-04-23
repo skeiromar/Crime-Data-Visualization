@@ -38,7 +38,6 @@ Clicking any dot shows the details of that crime
 ![Marker Popup](readme_resources/clicking_marker.png)
 
 
-
 ### Technologies
 
 This project is implemented with the following technologies:
