@@ -213,6 +213,8 @@ document.addEventListener("DOMContentLoaded",() => {
     let btnL = document.getElementById("locationButton");
     let btnyear = document.getElementById("yearButton");
     let selectAllBtn = document.querySelector('.button-select-showall');
+    let selectMulBtn = document.querySelector(".button-select-multiple");
+    
 
     let selector = document.getElementById("selector");
     let selected = selector.options[selector.selectedIndex].value;
@@ -220,7 +222,6 @@ document.addEventListener("DOMContentLoaded",() => {
     // debugger
     let yrFiltered = yearFilter.options[yearFilter.selectedIndex].value ;
 
-    
    function render(data, error) {
 
 
@@ -229,6 +230,184 @@ document.addEventListener("DOMContentLoaded",() => {
     let filtered = false;
     let filterType = null;
 
+    // Once the button is pressed, we check for what was selected within the selectors. 
+    // We save the corresponding values within the hash. If the key is found, we use the corresponding 
+    // value as the basis for the filtering of data
+    // We'll have three if elses for depending on how many selectors were selected 
+
+    selectMulBtn.onclick = function() {
+      let selectees = document.querySelectorAll(".selector");
+      let selectedOptions = [];
+      
+      
+      
+      for (let i = 0; i < selectees.length; i++) {
+        let selected = selectees[i].options[selectees[i].selectedIndex].value;
+        
+        if (selected === 'Bronx') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          // crimeCoordsReturn = crimeCoords(data.filter(d => d.boro_nm === 'BRONX'));
+          selectedOptions = [...selectedOptions, ['boro_nm', 'BRONX']];
+          filterType = null;
+
+        } else if (selected === 'Manhattan') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            selectedOptions = [...selectedOptions, ['boro_nm', 'MANHATTAN']];
+            
+            filterType = null;
+
+        } else if (selected === 'Queens') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          
+          selectedOptions = [...selectedOptions, ['boro_nm', 'QUEENS']];
+          
+          filterType = null;
+        } else if (selected === 'Brooklyn') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            selectedOptions = [...selectedOptions, ['boro_nm', 'BROOKLYN']];
+            filterType = null;
+        } else if (selected === 'STATEN ISLAND') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            selectedOptions = [...selectedOptions, ['boro_nm', 'STATEN ISLAND']];
+            
+            filterType = null;
+        } else if (selected === '2018') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          selectedOptions = [...selectedOptions, ['rpt_dt', '2018']];
+
+          
+          filterType = null;
+
+
+        } else if (selected === '2011') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            // crimeCoordsReturn = crimeCoords(data.filter(d => d.rpt_dt.slice(0, 4) === '2011'));
+            selectedOptions = [...selectedOptions, ['rpt_dt', '2011']];
+            filterType = null;
+
+        } else if (selected === '2010') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            selectedOptions = [...selectedOptions, ['rpt_dt', '2010']];
+            
+            filterType = null;
+
+            
+        } else if (selected === '2009') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            selectedOptions = [...selectedOptions, ['rpt_dt', '2009']];            
+            
+            filterType = null;
+            
+        } else if (selected === '2008') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            selectedOptions = [...selectedOptions, ['rpt_dt', '2008']];
+            
+            filterType = null;
+        } else if (selected === '2007') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          selectedOptions = [...selectedOptions, ['rpt_dt', '2007']];
+          
+          filterType = null;
+        } else if (selected === '2006') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          selectedOptions = [...selectedOptions, ['rpt_dt', '2006']];
+          
+          filterType = null;
+        } else if (selected === 'FELONY') {
+          filtered = true;
+          d3.selectAll("svg").remove();
+          filterType = 'Felony';
+          // crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'FELONY'));
+          selectedOptions = [...selectedOptions, ['law_cat_cd', 'FELONY']];
+          filterType = null;
+
+        } else if (selected === 'MISDEMEANOR') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            // crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'MISDEMEANOR'));
+            selectedOptions = [...selectedOptions, ['law_cat_cd', 'MISDEMEANOR']]; 
+            // map.fitBounds(map.getBounds());
+            filterType = null;
+
+        } else if (selected === 'VIOLATION') {
+            filtered = true;
+            d3.selectAll("svg").remove();
+            selectedOptions = [...selectedOptions, ['law_cat_cd', 'VIOLATION']]; 
+
+            // crimeCoordsReturn = crimeCoords(data.filter(d => d.law_cat_cd === 'VIOLATION'));
+            
+            filterType = null;
+        } 
+
+      }
+      let multFiler = (data, arg1, arg2) => {
+
+        let newData = data;
+        if (arg1 === 'rpt_dt') {
+          newData = newData.filter(d => d.rpt_dt.slice(0, 4) === arg2);
+        } else {
+          newData = newData.filter(d => d[arg1] === arg2);
+        }
+        // debugger
+        return (a3, a4) => {
+          if (a3 === 'rpt_dt') {
+            newData = newData.filter(d => d.rpt_dt.slice(0, 4) === a4);
+          } else {
+            newData = newData.filter(d => d[a3] === a4);
+          }
+          return (a5, a6, has = true) => {
+            if (!has) {
+              return newData;
+            } else {
+              if (a5 === 'rpt_dt') {
+                newData = newData.filter(d => d.rpt_dt.slice(0, 4) === a6);
+              } else {
+                newData = newData.filter(d => d[a5] === a6);
+              }
+              return newData;
+            }
+          };
+        };
+      };
+
+      let mult = multFiler;
+      let count = 0;
+
+      for (let i = 0; i < selectedOptions.length; i++) {
+        if (i === 0) {
+
+          mult = mult(data, selectedOptions[i][0], selectedOptions[i][1]);        
+        } else {
+          mult = mult(selectedOptions[i][0], selectedOptions[i][1]);        
+        }
+        count++;
+      }
+      if (count === 1) {
+        alert("please select more filters");
+        map.setZoom(map.getZoom());
+
+      } else {
+        if (count < 3) {
+          mult = mult(0, 0, false);
+        }
+        crimeCoordsReturn = crimeCoords(mult);
+        map.setZoom(map.getZoom());
+      }
+
+
+    };
 
     btnL.onclick = function() {
 
@@ -339,6 +518,7 @@ document.addEventListener("DOMContentLoaded",() => {
     let violationBtn = document.getElementById("violationBtn");
     let violationSelector = document.getElementById("filter_violation_type");
     let violationSelected = violationSelector.options[violationSelector.selectedIndex].value;
+    
 
     violationBtn.onclick = function() {
         violationSelected = violationSelector.options[violationSelector.selectedIndex].value;
@@ -423,7 +603,6 @@ document.addEventListener("DOMContentLoaded",() => {
             if (Bounds && !filtered && dragEnd) {
               crimeCoordsReturn =  crimeCoords(data, Bounds);
               d3.selectAll("svg").remove();
-                  // zoomedOut = true;
                   
                   
             } else if (filterType === '2018' && filtered && dragEnd && Bounds) {
@@ -439,8 +618,8 @@ document.addEventListener("DOMContentLoaded",() => {
               d = new google.maps.LatLng(d.value[1], d.value[0]);
               d = projection.fromLatLngToDivPixel(d);
               return d3.select(this)
-                  .style("left", (d.x - padding) + "px")
-                  .style("top", (d.y - padding) + "px");
+                .style("left", (d.x - padding) + "px")
+                .style("top", (d.y - padding) + "px");
             };
             
             let marker = layer.selectAll('svg')
