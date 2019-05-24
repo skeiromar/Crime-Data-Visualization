@@ -212,10 +212,23 @@
   transform: rotate(360deg);
   transition: all 1s ease;
 }
+
+.personal-site {
+  display: flex;
+    margin-right: 30px;
+    width: 70px;
+    padding: 0;
+}
+.personal-site:hover {
+  transform: rotate(90deg);
+  transition: all 0.4s ease;
+}
+
 .about-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 29px;
 }
 #abt {
   font-size: 24px;
@@ -223,3 +236,4 @@
   margin-right: -15px;
   margin-top: 100px;
 }
+
